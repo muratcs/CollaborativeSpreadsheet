@@ -1,0 +1,28 @@
+<html>
+    <head>
+{#        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>#}
+        <script src="../static/jquery-3.3.1.js"></script>
+        <script src="../static/notify.js"></script>
+        <script src="../static/jqsheet.js"></script>
+    </head>
+    <body>
+        <h1> Collaborative Spreadsheet </h1>
+		<div align="right">
+        <a href="{% url 'signup' %}"> Sign Up </a> &nbsp
+        <a href="{% url 'login' %}"> Login </a> &nbsp
+		{% if request.user.is_authenticated %}
+			User: {{ request.user }} 
+			<a href="/accounts/logout?next=/">Logout</a>
+		{% endif %}
+		</div>
+        <a href="/">Create Sheet</a> &nbsp
+        <a href="/control">Control Panel</a>
+		<div>
+		{% block body %}
+        {% endblock %}
+		</div>
+        <a href="/">Create Sheet</a> &nbsp
+        <a href="/control">Control Panel</a>
+
+    </body>
+</html>

@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+{% block body %}
+
+
+    <title>Murti</title><style type="text/css">
+
+
+      .column-in {
+        margin:0; padding:0;
+        }
+
+      .cleaner {
+        clear:both;
+        height:1px;
+        font-size:1px;
+        border:none;
+        margin:0; padding:0;
+        background:transparent;
+        display:none;
+        }
+
+      #container {
+        width: 900px;
+        padding:0;
+        display: table;
+        border: 1px solid floralwhite;
+        }
+
+      #row  {
+        display: table-row;
+        }
+
+      #left {
+        width: 30%;
+        padding:0;
+        display: table-cell;
+        }
+
+      #right {
+        width:30%;
+        display: table-cell;
+        }
+
+      #middle {
+        padding: 10px;
+        width: 40%;
+        display: table-cell;
+        }
+
+        /* IE ONLY */
+      * html #container {
+        }
+      * html #row {
+        }
+      * html #left {
+        float:left;
+        }
+      * html #right {
+        float:right;
+        }
+      * html #middle {
+        float: left;
+        }
+      * html .cleaner {
+        display:block;
+        }
+
+    </style>
+
+
+    <h2> Create a new sheet or attach to an existing one with its id. </h2>
+
+    <div>
+        <form id="form1" onSubmit="return false;">
+            <button id="create">CREATE</button>
+            &nbsp Max Rows: <input type="number" name="row" value="10" min="1" max="1000" placeholder="MaxRows">
+            &nbsp Max Cols: <input type="number" name="col" value="10" min="1" max="1000" placeholder="MaxCols">
+        </form>
+    </div>
+
+    <div>
+        <form id="form2" onSubmit="return false;">
+            <button id="attach">ATTACH</button>
+            &nbsp ID: <input type="number" name="sid" value="" min="1" max="1000" placeholder="ID">
+        </form>
+    </div>
+
+
+    <div id="controlpanel" style="display: none;">
+        <h2> Attached Sheet ID: <span id="sheetid"> {{sid}} </span> &nbsp;&nbsp  Sheet Name: <span id="sheetname"> {{ sname }} </span> </h2>
+
+
+        <div id="container"><div id="row">
+
+            <div id="left"><div class="column-in">
+            <h4>Operations-1</h4>
+
+                <form id="form01" onSubmit="return false;">
+                    <input type="text" size=5 name="setNameForm" value="" placeholder="Name" />
+                    <button id="setName" name="submit" value="setName">setName</button>
+                </form>
+
+                <form id="form02" onSubmit="return false;">
+                    <input type="text" size=5 name="setCellAddr" value="" placeholder="CellAddr" />
+                    <input type="text" size=5 name="setCellContent" value="" placeholder="Content" />
+                    <button id="setCellValue" name="submit" value="setCellValue">setCellValue</button>
+                </form>
+
+                <form id="form03" onSubmit="return false;">
+                    <input type="text" size=8 name="getCellForm" value="" placeholder="CellAddr" />
+                    <button id="getCell" name="submit" value="getCell">getCell</button>
+                </form>
+
+                <form id="form04" onSubmit="return false;">
+                    <input type="text" size=9 name="getCellsForm" value="" placeholder="CellRange=ALL" />
+                    <button id="getCells" name="submit" value="getCells">getCells</button>
+                </form>
+
+
+                <form id="form05" onSubmit="return false;">
+                <input type="number" name="evaliters" value="" min="1" max="1000000"  placeholder="iterations=10" />
+                    <button id="evaluate" name="submit" value="evaluate">evaluate</button>
+                </form>
+
+            </div></div>
+
+            <div id="middle"><div class="column-in">
+            <h4>Operations-2</h4>
+
+                <form id="form11" onSubmit="return false;">
+                    <input type="text" name="cutAddr" size="6" placeholder="CellRange">
+                    <button id="cutRange">cutRange</button>
+                </form>
+
+                <form id="form12" onSubmit="return false;">
+                    <input type="text" name="copyAddr" size="6" placeholder="CellRange">
+                    <button id="copyRange">copyRange</button>
+                </form>
+
+                <form id="form13" onSubmit="return false;">
+                    <input type="text" name="pasteAddr" size="6" placeholder="CellAddr">
+                    <button id="pasteRange">pasteRange</button>
+                </form>
+
+                <form id="form14" enctype="multipart/form-data" onSubmit="return false; ">
+                    <button id="upload">upload</button>
+                    <input type="file" id="fileinput" name="myfile">
+                </form>
+
+            </div></div>
+
+            <div id="right"><div class="column-in">
+                <h4>Operations-3</h4>
+
+                <form id="form21" onSubmit="return false;">
+                    <button id="list">list</button>
+                </form>
+
+                <form id="form22" onSubmit="return false;">
+                    <label>
+                        <input type="checkbox" name="listdirty" value="1">
+                    </label> Dirty
+                    <button id="listmem">listmem</button>
+                </form>
+
+                <form id="form23" onSubmit="return false;">
+                    <input id="phfields" type="number" min="1" max="1000" name="saveid" value="" placeholder="ID={{ sid }}" />
+                    <button id="save">save</button>
+                </form>
+
+                <form id="form24" onSubmit="return false;">
+                    <input id="phfields" type="number" min="1" max="1000" name="loadid" value="" placeholder="ID={{ sid }}" />
+                    <button id="load">load</button>
+                </form>
+
+                <form id="form25" onSubmit="return false;">
+                    <input id="phfields" type="number" min="1" max="1000" name="deleteid" value="" placeholder="ID={{ sid }}" />
+                    <button id="delete">delete</button>
+                </form>
+
+            </div></div>
+
+            <div class="cleaner">&nbsp;</div>
+
+        </div></div>
+
+        <p >
+            <span id="response"> {{ response }} </span>
+        </p>
+
+        <div id="test" style="position:fixed; top:50px; right:50px; display:none;
+        border: solid 1px #a0a0e0; background:#f0f0ff; padding: 20px; ">
+            <span>test</span>
+        </div>
+
+
+        <style class="display">
+            table {
+            border: solid 1px;
+            font-size: 1.1em;
+            text-align: center;
+            border-collapse:collapse;
+            style: 100px;
+        }
+
+        tr.header{
+            font-weight: bold;
+            background-color: #ffffef
+        }
+
+        td.header{
+            font-weight: bold;
+            border: 2px solid;
+        }
+
+        tr{
+            background-color: #ffffef
+        }
+
+        td {
+            border: 1px solid ;
+            margin: 0;
+            padding: 10px;
+        }
+        .highlighted {
+        background: yellow;
+      }
+
+        </style>
+
+        <table id="cells" class="display" >
+            <tbody id="cellsbody">
+            </tbody>
+        </table>
+
+        <br><br>
+        <button id="oldbuttons">Show/Hide Phase3 controls</button>
+        <form action="/control/" method=POST enctype="multipart/form-data">
+        {% csrf_token %}
+
+            <div id="container2" style="display: none; "><div id="row" >
+
+                <div id="left"><div class="column-in">
+                <h4>Operations-1</h4>
+
+                    <p>
+                        <input type="submit" name="submit" value="getId"/>
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="getName"/>
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="getCell"/>
+                        <input type="text" size=8 name="getCellForm" value="" placeholder="CellAddr" />
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="getCells"/>
+                        <input type="text" size=9 name="getCellsForm" value="" placeholder="CellRange=ALL" />
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="setName"/>
+                        <input type="text" size=5 name="setNameForm" value="" placeholder="Name" />
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="setCellValue"/>
+                        <input type="text" size=5 name="setCellAddr" value="" placeholder="CellAddr" />
+                        <input type="text" size=5 name="setCellContent" value="" placeholder="Content" />
+                    </p>
+
+                    <p>
+                    <input type="submit" name="submit" value="evaluate"/>
+                    <input type="number" name="evaliters" value="" min="1" max="1000000"  placeholder="iterations=10" />
+                </p>
+
+
+                </div></div>
+
+                <div id="middle"><div class="column-in">
+                <h4>Operations-2</h4>
+
+
+
+                    <p>
+                        <input type="submit" name="submit" value="cutRange"/>
+                        <input type="text" name="cutAddr" size="6" placeholder="CellRange">
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="copyRange"/>
+                        <input type="text" name="copyAddr" size="6" placeholder="CellRange">
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="pasteRange"/>
+                        <input type="text" name="pasteAddr" size="6" placeholder="CellAddr">
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="upload"/>
+                        <input type="file" name="myfile">
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="uploadCSV"/>
+                        <input type="text" name="csv" size="8" placeholder="CSV-Text">
+                    </p>
+
+
+                </div></div>
+
+                <div id="right"><div class="column-in">
+                    <h4>Operations-3</h4>
+
+                    <p>
+                        <input type="submit" name="submit" value="list"/>
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="listmem"/>
+                        <label>
+                            <input type="checkbox" name="listdirty" value="1">
+                        </label> Dirty
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="save"/>
+                        <input type="number" min="1" max="1000" name="saveid" value="" placeholder="ID={{ sid }}" />
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="load"/>
+                        <input type="number" min="1" max="1000" name="loadid" value="" placeholder="ID={{ sid }}" />
+                    </p>
+
+                    <p>
+                        <input type="submit" name="submit" value="delete"/>
+                        <input type="number" min="1" max="1000" name="deleteid" value="" placeholder="ID={{ sid }}" />
+                    </p>
+
+
+                </div></div>
+
+
+                <div class="cleaner">&nbsp;</div>
+
+            </div></div>
+
+        </form>
+
+
+    </div>
+
+
+
+{% endblock %}
